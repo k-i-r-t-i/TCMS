@@ -2,6 +2,9 @@ package com.tcms.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +24,36 @@ import com.tcms.services.UserService;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+	@Autowired
 	private UserService userService;
-    //post-create user
 	@PostMapping("/")
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        UserDto createUserDto=this.userService.createUser(userDto);
+        return new ResponseEntity<UserDto>(createUserDto,HttpStatus.CREATED);
+    }
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,@PathVariable Long userId) {
+        UserDto updatedUser=this.userService.updateUser(userDto,userId);
+        return new ResponseEntity<UserDto>(updatedUser,HttpStatus.OK);
+    }
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId) {
+        this.userService.deleteUser(userId);
+        return new ResponseEntity<ApiResponse>(new ApiResponse("user deleted successfully",true),HttpStatus.OK);
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long userId) {
+    	UserDto getUser= this.userService.getUserById(userId);
+        return new ResponseEntity<UserDto>(getUser,HttpStatus.OK);
+    }
+    @GetMapping("/")
+	public ResponseEntity<List<UserDto>> getAllUsers(){
+		List<UserDto> users=this.userService.getAllUsers();
+		return ResponseEntity.ok(users);
+	}
+  	
+    //post-create user
+	/*@PostMapping("/")
 	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
 		UserDto createUserDto=this.userService.createUser(userDto);
 		return new ResponseEntity<>(createUserDto,HttpStatus.CREATED);
@@ -47,7 +77,7 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.getAllUsers());
 	}
 	@GetMapping("/{userId}")
-	public ResponseEntity<UserDto> setSingleUser(@PathVariable Long userId){
+	public ResponseEntity<UserDto> getUserById(@PathVariable Long userId){
 		return ResponseEntity.ok(this.userService.getUserById(userId));
-	}
+	}*/
 }

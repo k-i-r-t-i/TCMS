@@ -8,19 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import com.tcms.config.AppConstants;
 import com.tcms.entity.Role;
 import com.tcms.repository.RoleRepository;
-
+@EnableEurekaClient
 @SpringBootApplication
 public class JwtauthenticationserverApplication implements CommandLineRunner{
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+    
 	public static void main(String[] args) {
 		SpringApplication.run(JwtauthenticationserverApplication.class, args);
 	}
@@ -49,6 +52,10 @@ public class JwtauthenticationserverApplication implements CommandLineRunner{
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 
 }

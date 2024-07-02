@@ -19,6 +19,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		User user = userRepository.findByEmail(username);
+		System.out.println(user.getUsername());
+		System.out.println(user.getPassword());
 		if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -32,6 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                // .disabled(false)
                // .build();
 		return user;
+		
 	}
 
 }

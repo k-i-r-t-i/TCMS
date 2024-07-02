@@ -3,7 +3,7 @@ package com.tcms.helper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.cglib.core.internal.Function;
+import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.util.Date;
@@ -60,7 +60,11 @@ public class JwtUtil {
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		//return doGenerateToken(claims, userDetails.getUsername());
+		String token = doGenerateToken(claims, userDetails.getUsername());
+	    // Log the generated token
+	    System.out.println("Generated Token: " + token);
+	    return token;
 	}
 
 //while creating the token

@@ -58,10 +58,12 @@ public class AuthController {
 	}
 	private void authenticate(String username, String password) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("password"+password);
 		UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(username,password);
 		try {
 		this.authenticationManager.authenticate(authenticationToken);
 		}catch(BadCredentialsException e){
+			e.printStackTrace();
 			System.out.println("Invalid Details!!");
 			throw new ApiException("invalid username or password");
 		}
@@ -70,9 +72,11 @@ public class AuthController {
 	//register new user api
 	@PostMapping("/register")
 	public ResponseEntity<UserDto>registerUser(@RequestBody UserDto userDto)
-	{
+	{   
+	    System.out.println("userdto===="+userDto.toString());
 		UserDto registeredUser=this.userService.registerNewUser(userDto);
 		return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
 	}
 
 }
+
